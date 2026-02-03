@@ -1,0 +1,17 @@
+packaging
+scikit-learn
+pyyaml
+ipykernel
+transformers @ git+https://github.com/huggingface/transformers@main
+transformers[torch]
+tensorboard
+evaluate
+datasets
+peft
+huggingface-hub
+# causal-conv1d>=1.2.0
+# mamba-ssm
+datasets
+peft
+trl
+pillow # for clip image processing
