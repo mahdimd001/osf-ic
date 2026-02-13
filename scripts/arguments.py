@@ -1,0 +1,201 @@
+import argparse
+
+
+def arguments():
+    parser = argparse.ArgumentParser(
+        description="One-Shot Foundation Model Fine-tuning"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="vit",
+        choices=[
+            "resnet",
+            "vit",
+            "vit-large",
+            "distilbert",
+            "bert-base",
+            "bert-large",
+            "roberta",
+            "t5-base",
+            "t5",
+            "t5-large",
+            "swinv2",
+            "clip",
+            "deit",
+            "osf",
+        ],
+        help="Model architecture to use (resnet or vit)",
+    )
+    parser.add_argument(
+        "--save_dir",
+        type=str,
+        default="ckpts/",
+        help="dir save the model",
+    )
+
+    parser.add_argument(
+        "--resume_ckpt",
+        type=str,
+        default=None,
+        help="dir save the model",
+    )
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="imagenet-1k",
+        choices=[
+            "cifar100",
+            "imagenet-1k",
+            "flowers102",
+            "Caltech101",
+            "cifar10",
+            "Food101",
+            "sst2",
+            "mnli",
+            "qqp",
+            "qnli",
+            "stsb",
+            "mrpc",
+            "rte",
+            "cola",
+            "squad_v2",
+            "squad",
+        ],
+        help="Dataset to use",
+    )
+    parser.add_argument(
+        "--k_shot",
+        type=int,
+        default=None,
+        help="split k-shot local data",
+    )
+    parser.add_argument(
+        "--num_shards",
+        type=int,
+        default=30,
+        help="Number of mini shards data",
+    )
+
+    parser.add_argument(
+        "--lr", type=float, default=2e-5, help="Learning rate for the optimizer"
+    )
+    parser.add_argument(
+        "--step_size",
+        type=int,
+        default=5,
+        help="Step size for the learning rate scheduler",
+    )
+    parser.add_argument(
+        "--num_local_epochs",
+        type=int,
+        default=1,
+        help="Number of local epochs for each client in a federated learning setting",
+    )
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=20,
+        help="Number of communication rounds for federated learning",
+    )
+    parser.add_argument(
+        "--spp", action="store_true", help="salient parameter prioritization"
+    )
+    parser.add_argument(
+        "--batch_size", type=int, help="per device batch size", default=64
+    )
+
+    # PEFT arguments
+    parser.add_argument(
+        "--peft", action="store_true", help="parameter efficient finetuning"
+    )
+
+    parser.add_argument(
+        "--adapter_ckpt",
+        type=str,
+        default=None,
+        help="pre-trained adapter ckpt dir",
+    )
+
+    parser.add_argument(
+        "--elastic_config",
+        type=str,
+        default='/lustre/hdd/LAS/jannesar-lab/msamani/OSF/scripts/elastic_space.json',
+        help="Elastic space file path",
+    )
+
+    parser.add_argument(
+        "--patience",
+        type=int,
+        default=500,
+        help="Convergence patience for early stopping",
+    )
+
+    parser.add_argument(
+        "--log_interval",
+        type=int,
+        default=10,
+        help="Logging interval",
+    )
+
+    parser.add_argument(
+        "--grad_beta",
+        type=float,
+        default=0.5,
+        help="Gradient accumulation beta",
+    )
+
+    parser.add_argument(
+        "--huggingface_token",
+        type=str,
+        default="",
+        help="Huggingface token for private model",
+    )
+    parser.add_argument(
+        "--cache_dir",
+        type=str,
+        default="/lustre/hdd/LAS/jannesar-lab/msamani/.cache",
+        help="Cache directory for datasets",
+    )
+
+    parser.add_argument(
+        "--push_to_hub",
+        action="store_true",
+        help="Push model to HuggingFace Hub",
+    )
+
+    parser.add_argument(
+        "--fp16",
+        action="store_true",
+        help="Use mixed precision training",
+    )
+    parser.add_argument(
+        "--epoch_eval_size",
+        type=int,
+        default=5000,
+        help="Number of samples to use for evaluation in an epoch",
+    )
+    parser.add_argument(
+        "--reorder",
+        type=str,
+        default="per_epoch",
+        choices=["none","once", "per_epoch", "per_batch"],
+        help="Reorder once or per epoch or per batch for weight reordering",
+    )
+    parser.add_argument(
+        "--reorder_method",
+        type=str,
+        default="wanda_ricci",
+        choices=["magnitude", "wanda","gradient","wanda_ricci"],
+        help="Weight reordering method",
+    )
+
+    parser.add_argument(
+        "--smart_medium",
+        type=bool,
+        default=False,
+        help="Enable smart medium model",
+    )
+
+    args = parser.parse_args()
+    return args
