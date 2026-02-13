@@ -166,7 +166,7 @@ def main(args):
             learning_rate=args.lr,
             report_to=[],
             fp16=args.fp16,
-            dataloader_num_workers=2,
+            dataloader_num_workers=8,
             log_interval=args.log_interval,
             reorder = args.reorder,
             reorder_method = args.reorder_method,
@@ -188,4 +188,10 @@ def main(args):
 
 if __name__ == "__main__":
     args = arguments()
+    # write args to file
+    # create save_dir if it doesn't exist
+    os.makedirs(args.save_dir, exist_ok=True)
+    with open(os.path.join(args.save_dir, "args.txt"), "w") as f:
+        for arg in vars(args):
+            f.write(f"{arg}: {getattr(args, arg)}\n")
     main(args)

@@ -8,7 +8,7 @@ def arguments():
     parser.add_argument(
         "--model",
         type=str,
-        default="vit",
+        default="deit",
         choices=[
             "resnet",
             "vit",
@@ -43,7 +43,7 @@ def arguments():
     parser.add_argument(
         "--dataset",
         type=str,
-        default="imagenet-1k",
+        default="cifar100",
         choices=[
             "cifar100",
             "imagenet-1k",
@@ -95,14 +95,14 @@ def arguments():
     parser.add_argument(
         "--epochs",
         type=int,
-        default=20,
+        default=50,
         help="Number of communication rounds for federated learning",
     )
     parser.add_argument(
         "--spp", action="store_true", help="salient parameter prioritization"
     )
     parser.add_argument(
-        "--batch_size", type=int, help="per device batch size", default=64
+        "--batch_size", type=int, help="per device batch size", default=128
     )
 
     # PEFT arguments
@@ -134,7 +134,7 @@ def arguments():
     parser.add_argument(
         "--log_interval",
         type=int,
-        default=10,
+        default=50,
         help="Logging interval",
     )
 
@@ -193,7 +193,7 @@ def arguments():
     parser.add_argument(
         "--smart_medium",
         type=bool,
-        default=False,
+        default=True,
         help="Enable smart medium model",
     )
 
